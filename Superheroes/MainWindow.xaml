@@ -1,0 +1,42 @@
+﻿<Window x:Class="Superheroes.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Superheroes" d:DataContext="{d:DesignInstance Type=local:Superheroe}"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="730" Width="970" MinWidth="800" MinHeight="450"
+        Icon="Contenido/shield.ico">
+    <Window.Resources>
+        <local:fondoHeroe x:Key="comprobarFondo"></local:fondoHeroe>
+        <local:comprobarRango x:Key="comprobarRango"></local:comprobarRango>
+    </Window.Resources>
+    <DockPanel x:Name="portadaDockPanel"  Background="{Binding Path=Heroe, Converter={StaticResource comprobarFondo}}">
+        <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+            <TextBlock FontSize="40" Text="{Binding Path=Nombre}"></TextBlock>
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <Image Source="Contenido/xmen.png" Width="45" Visibility="{Binding Path=Xmen,Converter={StaticResource comprobarRango}}"></Image>
+                <Image Source="Contenido/avengers.png" Visibility="{Binding Path=Vengador,Converter={StaticResource comprobarRango}}" Width="35"></Image>
+            </StackPanel>
+        </DockPanel>
+
+        <StackPanel DockPanel.Dock="Bottom"  HorizontalAlignment="Center" Orientation="Horizontal">
+            <Image Source="Contenido/arrow.png" Width="20" Tag="retroceder" MouseDown="CambiarPersoanje_Image"></Image>
+            <TextBlock x:Name="contadorHeroe">1/3</TextBlock>
+            <Image Source="Contenido/arrow.png" Width="20" Tag="avanzar" RenderTransformOrigin="0.5,0.5" MouseDown="CambiarPersoanje_Image">
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="180"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+        </StackPanel>
+
+        <Image Source="{Binding Path=Imagen}" Stretch="Fill" Margin="20"></Image>
+        
+        
+    </DockPanel>
+</Window>
