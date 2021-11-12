@@ -20,38 +20,24 @@ namespace Superheroes
     /// </summary>
     public partial class MainWindow : Window
     {
-        int heroeActual = 0;
-        List<Superheroe> listaSuperHeroes = Superheroe.GetSamples();
+        MainWindowVM vm = new MainWindowVM();
         public MainWindow()
         {
             InitializeComponent();
-            portadaDockPanel.DataContext = listaSuperHeroes[heroeActual];
+            this.DataContext = vm;
+            
         }
 
-        private void CambiarPersoanje_Image(object sender, MouseButtonEventArgs e)
+        private void leftImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Image imagen = (Image)sender;
-
-            switch (imagen.Tag.ToString())
-            {
-                case "avanzar":
-                    if (heroeActual + 1 < listaSuperHeroes.Count)
-                    {
-                        heroeActual++;
-                        portadaDockPanel.DataContext = listaSuperHeroes[heroeActual];
-                        contadorHeroe.Text = heroeActual + 1 + "/3";
-                    }
-                    break;
-
-                case "retroceder":
-                    if (heroeActual - 1 >= 0)
-                    {
-                        heroeActual--;
-                        portadaDockPanel.DataContext = listaSuperHeroes[heroeActual];
-                        contadorHeroe.Text = heroeActual + 1 + "/3";
-                    }
-                    break;
-            }
+            vm.Retroceder();
         }
+
+        private void rightImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            vm.Avanzar();
+        }
+
+
     }
 }

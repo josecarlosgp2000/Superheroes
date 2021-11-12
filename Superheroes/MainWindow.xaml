@@ -5,25 +5,96 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Superheroes" d:DataContext="{d:DesignInstance Type=local:Superheroe}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="730" Width="970" MinWidth="800" MinHeight="450"
+        Title="SuperHeroes" Height="730" Width="970" MinWidth="800" MinHeight="450"
         Icon="Contenido/shield.ico">
     <Window.Resources>
-        <local:fondoHeroe x:Key="comprobarFondo"></local:fondoHeroe>
-        <local:comprobarRango x:Key="comprobarRango"></local:comprobarRango>
+        <Style TargetType="Image" x:Key="portada">
+            <Setter Property="Opacity" Value="0.5"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver"  Value="True">
+                    <Setter Property="Opacity" Value="1"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Border" x:Key="bordeImagen">
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=portadaImage, Path=IsMouseOver}" Value="True">
+                    <Setter Property="BorderThickness" Value="3"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+
+        </Style>
+        
+
+        <Style TargetType="TextBlock" x:Key="nombreHeroe">
+            <Setter Property="FontSize" Value="30"></Setter>
+            <Setter Property="Foreground" Value="LightGoldenrodYellow"></Setter>
+            <Setter Property="FontFamily" Value="Broadway"></Setter>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="FontSize" To="70" Duration="0:0:5"></DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+
+                </EventTrigger>
+
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="FontSize" To="30" Duration="0:0:5"></DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DockPanel" x:Key="fondoPrograma">
+            <Setter Property="Background" Value="IndianRed"></Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=SuperheroeActual.Heroe}" Value="True">
+                    <Setter Property="Background" Value="PaleGreen"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Image" x:Key="imagenenXmen">
+            <Setter Property="Visibility" Value="Collapsed"></Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=SuperheroeActual.Xmen}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Image" x:Key="imagenenVengador">
+            <Setter Property="Visibility" Value="Collapsed"></Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=SuperheroeActual.Vengador}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
     </Window.Resources>
-    <DockPanel x:Name="portadaDockPanel"  Background="{Binding Path=Heroe, Converter={StaticResource comprobarFondo}}">
+    <DockPanel Style="{StaticResource fondoPrograma}" x:Name="portadaDockPanel">
         <DockPanel DockPanel.Dock="Top" LastChildFill="False">
-            <TextBlock FontSize="40" Text="{Binding Path=Nombre}"></TextBlock>
+            <TextBlock  Text="{Binding Path=SuperheroeActual.Nombre}" Style="{StaticResource nombreHeroe}"></TextBlock>
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                <Image Source="Contenido/xmen.png" Width="45" Visibility="{Binding Path=Xmen,Converter={StaticResource comprobarRango}}"></Image>
-                <Image Source="Contenido/avengers.png" Visibility="{Binding Path=Vengador,Converter={StaticResource comprobarRango}}" Width="35"></Image>
+                <Image Source="Contenido/xmen.png" Width="45" Style="{StaticResource imagenenXmen}"></Image>
+                <Image Source="Contenido/avengers.png" Style="{StaticResource imagenenVengador}" Width="35"></Image>
             </StackPanel>
         </DockPanel>
 
         <StackPanel DockPanel.Dock="Bottom"  HorizontalAlignment="Center" Orientation="Horizontal">
-            <Image Source="Contenido/arrow.png" Width="20" Tag="retroceder" MouseDown="CambiarPersoanje_Image"></Image>
-            <TextBlock x:Name="contadorHeroe">1/3</TextBlock>
-            <Image Source="Contenido/arrow.png" Width="20" Tag="avanzar" RenderTransformOrigin="0.5,0.5" MouseDown="CambiarPersoanje_Image">
+            <Image Source="Contenido/arrow.png" Width="20" Tag="retroceder" MouseDown="leftImage_MouseLeftButtonUp"></Image>
+            <TextBlock  Text="{Binding Path=PosicionActual}"></TextBlock>
+            <TextBlock>/</TextBlock>
+            <TextBlock  Text="{Binding Path=TotalHeroes}"></TextBlock>
+            <Image Source="Contenido/arrow.png" Width="20" Tag="avanzar" RenderTransformOrigin="0.5,0.5" MouseDown="rightImage_MouseLeftButtonUp">
                 <Image.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -35,7 +106,9 @@
             </Image>
         </StackPanel>
 
-        <Image Source="{Binding Path=Imagen}" Stretch="Fill" Margin="20"></Image>
+        <Border Style="{StaticResource bordeImagen}"  BorderBrush="Black" Margin="20">
+            <Image Source="{Binding Path=SuperheroeActual.Imagen}" Stretch="Fill" Style="{StaticResource portada}" x:Name="portadaImage"></Image>
+        </Border>
         
         
     </DockPanel>
