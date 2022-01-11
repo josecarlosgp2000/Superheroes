@@ -28,15 +28,7 @@ namespace Superheroes
             
         }
 
-        private void leftImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            vm.Retroceder();
-        }
-
-        private void rightImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            vm.Avanzar();
-        }
+        
 
 
     }

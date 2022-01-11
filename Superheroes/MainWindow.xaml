@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="SuperHeroes" Height="730" Width="970" MinWidth="800" MinHeight="450"
         Icon="Contenido/shield.ico">
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding Path=SiguienteHeroe}" Key="A" Modifiers="Ctrl"></KeyBinding>
+        <KeyBinding Command="{Binding Path=AnteriorHeroe}" Key="R" Modifiers="Ctrl"></KeyBinding>
+    </Window.InputBindings>
     <Window.Resources>
         <Style TargetType="Image" x:Key="portada">
             <Setter Property="Opacity" Value="0.5"></Setter>
@@ -36,7 +40,7 @@
                 <EventTrigger RoutedEvent="MouseEnter">
                     <BeginStoryboard>
                         <Storyboard>
-                            <DoubleAnimation Storyboard.TargetProperty="FontSize" To="70" Duration="0:0:5"></DoubleAnimation>
+                            <DoubleAnimation Storyboard.TargetProperty="FontSize" To="140" Duration="0:0:4"></DoubleAnimation>
                         </Storyboard>
                     </BeginStoryboard>
 
@@ -90,20 +94,24 @@
         </DockPanel>
 
         <StackPanel DockPanel.Dock="Bottom"  HorizontalAlignment="Center" Orientation="Horizontal">
-            <Image Source="Contenido/arrow.png" Width="20" Tag="retroceder" MouseDown="leftImage_MouseLeftButtonUp"></Image>
+            <Button Command="{Binding Path=AnteriorHeroe}">
+                <Image Source="Contenido/arrow.png" Width="20"></Image>
+            </Button>
             <TextBlock  Text="{Binding Path=PosicionActual}"></TextBlock>
             <TextBlock>/</TextBlock>
             <TextBlock  Text="{Binding Path=TotalHeroes}"></TextBlock>
-            <Image Source="Contenido/arrow.png" Width="20" Tag="avanzar" RenderTransformOrigin="0.5,0.5" MouseDown="rightImage_MouseLeftButtonUp">
-                <Image.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform Angle="180"/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </Image.RenderTransform>
-            </Image>
+            <Button  Command="{Binding Path=SiguienteHeroe}">
+                <Image Source="Contenido/arrow.png" Width="20"  RenderTransformOrigin="0.5,0.5">
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="180"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+            </Button>
         </StackPanel>
 
         <Border Style="{StaticResource bordeImagen}"  BorderBrush="Black" Margin="20">

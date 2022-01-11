@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,14 +9,26 @@ using System.Threading.Tasks;
 
 namespace Superheroes
 {
-    class MainWindowVM : INotifyPropertyChanged
+    class MainWindowVM : ObservableObject
     {
-        private List<Superheroe> lista = Superheroe.GetSamples();
+
+        public RelayCommand SiguienteHeroe { get; }
+
+        public RelayCommand AnteriorHeroe { get; }
+
+        private SuperHeroeService servicio;
+
+        private List<Superheroe> lista;
         public MainWindowVM()
         {
+            servicio = new SuperHeroeService();
+            lista = servicio.GetSamples();
             SuperheroeActual = lista[0];
             PosicionActual = 1;
             TotalHeroes = lista.Count;
+
+            SiguienteHeroe = new RelayCommand(Avanzar);
+            AnteriorHeroe = new RelayCommand(Retroceder);
         }
         
         private Superheroe superheroeActual;
@@ -22,9 +36,8 @@ namespace Superheroes
         public Superheroe SuperheroeActual
         {
             get { return superheroeActual; }
-            set { 
-                superheroeActual = value;
-                NotifyPropertyChanger("SuperheroeActual");
+            set {
+                SetProperty(ref superheroeActual, value);
             }
         }
 
@@ -38,8 +51,7 @@ namespace Superheroes
             get { return posicionActual; }
             set
             {
-                posicionActual = value;
-                NotifyPropertyChanger("PosicionActual");
+                SetProperty(ref posicionActual, value);
             }
         }
 
@@ -53,8 +65,7 @@ namespace Superheroes
             get { return totalHeroes; }
             set
             {
-                totalHeroes = value;
-                NotifyPropertyChanger("TotalHeroes");
+                SetProperty(ref totalHeroes, value);
             }
         }
 
@@ -77,13 +88,7 @@ namespace Superheroes
                 SuperheroeActual = lista[PosicionActual - 1];
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void NotifyPropertyChanger(string propertyName)
-        {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
+    
 
     }
 }
